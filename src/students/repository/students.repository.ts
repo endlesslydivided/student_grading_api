@@ -1,10 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { QueryTypes, Transaction } from 'sequelize';
-import { StudentReport } from '../../reports/types/reports.types';
-import { Student } from '../entities/student.entity';
+import sequelize, { Transaction } from 'sequelize';
 import { Grade } from '../../grades/entities/grade.entity';
-import sequelize from 'sequelize';
+import { StudentReport } from '../../reports/types/reports.types';
 import { Subject } from '../../subjects/entities/subject.entity';
+import { Student } from '../entities/student.entity';
 import { Op } from 'sequelize';
 
 @Injectable()
@@ -28,47 +27,47 @@ export class StudentsRepository {
   }
 
   async findManyStudentsAverageGrades() {
-    const students = await this.studentsRepository.sequelize.query(
-      `
-            select "sorted"."studentId" "id", "sorted"."name", 
-            trunc(AVG(sorted.value),2) averageGrade
-            from (
-                    SELECT distinct on ("grades"."subjectId","grades"."studentId") "subjectId","Student"."id" "studentId", "Student"."name", "grades"."value", "grades"."createdAt"
-                    from 	"Students" AS "Student" 
-                                LEFT OUTER JOIN 
-                            "Grades" AS "grades" 
-                                ON "Student"."id" = "grades"."studentId"
-                    order by "grades"."subjectId","grades"."studentId", "grades"."createdAt" desc
-                ) sorted
-            GROUP by  id , "sorted"."name"
-        `,
-      { type: QueryTypes.SELECT, nest: true },
-    );
 
-    return students;
+    return this.studentsRepository.findAll({
+      include:[{
+        model:Grade,
+        as:'grades',
+        where:{
+          isLastSubmitted:true
+        },
+        attributes:[]
+      }],
+      attributes:{
+        include:[
+          [sequelize.literal('round(AVG(grades.value))'),'averageGrade'],
+        ]
+      },
+      group:["Student.id"]
+    });
+    
   }
 
   async findManyGradesByStudentId(id: string) {
-    const students = await this.studentsRepository.sequelize.query(
-      `
-        select "sorted"."studentId" "id", "sorted"."name", ARRAY_AGG("sorted"."subjectName"|| ' ' || "sorted".value) as "grades"
-        from (
-                SELECT distinct on ("grades"."subjectId","grades"."studentId") "subjectId","subject"."name" "subjectName","Student"."id" "studentId", "Student"."name", "grades"."value", "grades"."createdAt"
-                from 	"Students" AS "Student" 
-                            LEFT OUTER JOIN 
-                        "Grades" AS "grades" 
-                            ON "Student"."id" = "grades"."studentId"
-                          LEFT OUTER JOIN 
-                        "Subjects" AS "subject" 
-                            ON "subject"."id" = "grades"."subjectId"
-                where "Student"."id" = :id
-                order by "grades"."subjectId","grades"."studentId", "grades"."createdAt" desc
-            ) sorted
-        group by "sorted"."studentId", "sorted"."name"
-        `,
-      { type: QueryTypes.SELECT, nest: true, replacements: { id } },
-    );
+    return this.studentsRepository.findByPk(id,{
 
-    return students;
+      include:[{
+        model:Grade,
+        as:'grades',
+        where:{
+          isLastSubmitted:true,
+          value: {[Op.ne] : null}
+        },
+        attributes:['value'],
+        include:[
+          {
+            model: Subject,
+            as:'subject',
+            attributes:['name']
+          }
+        ],
+      }],
+
+    });
   }
+  
 }

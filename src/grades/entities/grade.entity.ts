@@ -11,7 +11,7 @@ import {
 import { Student } from '../../students/entities/student.entity';
 import { Subject } from '../../subjects/entities/subject.entity';
 
-@Table({ timestamps: true })
+@Table({ timestamps: true, tableName:'grades'})
 export class Grade extends Model<Grade> {
   @Default(DataType.UUIDV4)
   @Column({ type: DataType.UUID, primaryKey: true })
@@ -35,6 +35,10 @@ export class Grade extends Model<Grade> {
   @ForeignKey(() => Subject)
   @Column({ type: DataType.UUID })
   subjectId: string;
+
+  @ApiProperty({ example: true, description: 'Is this grade from the last submitted report' })
+  @Column({ type: DataType.BOOLEAN, allowNull:false })
+  isLastSubmitted: boolean;
 
   @BelongsTo(() => Student, {
     foreignKey: 'studentId',
