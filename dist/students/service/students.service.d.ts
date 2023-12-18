@@ -5,6 +5,6 @@ export declare class StudentsService {
     private studentRepository;
     constructor(studentRepository: StudentsRepository);
     upsertMany(reportData: Array<StudentReport>, transaction: Transaction): Promise<import("../entities/student.entity").Student[]>;
-    findManyStudentsAverageGrades(): Promise<import("../entities/student.entity").Student[]>;
-    findManyGradesByStudentId(id: string): Promise<import("../entities/student.entity").Student>;
+    findManyStudentsAverageGrades(): Promise<object[]>;
+    findManyGradesByStudentId(id: string): Promise<object[]>;
 }

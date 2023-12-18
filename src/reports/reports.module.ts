@@ -6,8 +6,8 @@ import { SubjectsModule } from 'src/subjects/subjects.module';
 import { GradesModule } from 'src/grades/grades.module';
 
 @Module({
-  imports: [StudentsModule, SubjectsModule,GradesModule],
-  controllers:[ReportsController],
-  providers: [ReportsService]
+  imports: [StudentsModule, SubjectsModule, GradesModule],
+  controllers: [ReportsController],
+  providers: [ReportsService],
 })
 export class FilesModule {}

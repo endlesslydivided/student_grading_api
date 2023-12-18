@@ -1,15 +1,19 @@
 import { Controller, Get } from '@nestjs/common';
-import { ApiBadRequestResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
-@ApiTags("Common")
+@ApiTags('Common')
 @Controller()
 export class AppController {
-
-  @ApiOperation({ summary: "Health check server" })
-  @ApiResponse({ status: 200, description: "Server works" })
-  @ApiBadRequestResponse({ description: "Bad Request" })
-  @Get("health")
+  @ApiOperation({ summary: 'Health check server' })
+  @ApiResponse({ status: 200, description: 'Server works' })
+  @ApiBadRequestResponse({ description: 'Bad Request' })
+  @Get('health')
   ping() {
-    return { description: "Server works" };
+    return { description: 'Server works' };
   }
 }

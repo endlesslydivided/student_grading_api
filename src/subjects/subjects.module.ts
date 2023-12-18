@@ -7,10 +7,14 @@ import { DatabaseModule } from 'src/database/database.module';
 
 @Module({
   controllers: [SubjectsController],
-  providers: [SubjectsService,SubjectRepository,{
-    provide: Subject,
-    useValue: Subject
-  }],
-  exports:[SubjectsService]
+  providers: [
+    SubjectsService,
+    SubjectRepository,
+    {
+      provide: Subject,
+      useValue: Subject,
+    },
+  ],
+  exports: [SubjectsService],
 })
 export class SubjectsModule {}

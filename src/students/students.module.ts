@@ -7,12 +7,14 @@ import { Student } from './entities/student.entity';
 
 @Module({
   controllers: [StudentsController],
-  providers: [StudentsService,StudentsRepository,
+  providers: [
+    StudentsService,
+    StudentsRepository,
     {
       provide: Student,
-      useValue: Student
-    }
+      useValue: Student,
+    },
   ],
-  exports: [StudentsService]
+  exports: [StudentsService],
 })
 export class StudentsModule {}

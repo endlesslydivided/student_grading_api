@@ -16,6 +16,7 @@ services:
     container_name: database
     image: postgres:15
     restart: always
+    entrypoint: [ "plsql", "-U", "postgres:postgres",'-c', 'CREATE DATABASE IF NOT EXISTS "gradingApp"']      
     ports:
       - 5432:5432
     env_file:

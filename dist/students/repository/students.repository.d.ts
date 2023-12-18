@@ -5,6 +5,6 @@ export declare class StudentsRepository {
     private studentsRepository;
     constructor(studentsRepository: typeof Student);
     createMany(studentReport: StudentReport[], transaction: Transaction): Promise<Student[]>;
-    findManyStudentsAverageGrades(): Promise<Student[]>;
-    findManyGradesByStudentId(id: string): Promise<Student>;
+    findManyStudentsAverageGrades(): Promise<object[]>;
+    findManyGradesByStudentId(id: string): Promise<object[]>;
 }
