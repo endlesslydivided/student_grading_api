@@ -27,7 +27,7 @@ let SubjectRepository = class SubjectRepository {
             updateOnDuplicate: ['name']
         });
     }
-    async findManySubjectGrades() {
+    async findManySubjectAvgMedGrades() {
         return this.subjectRepository.findAll({
             include: {
                 model: grade_entity_1.Grade,
@@ -39,6 +39,32 @@ let SubjectRepository = class SubjectRepository {
                 include: [
                     [sequelize_1.default.literal('trunc(AVG(grades.value),2)'), 'averageGrade'],
                     [sequelize_1.default.literal(`cast (percentile_cont(0.5) within group(order by grades.value) as varchar)`), 'medialGrade']
+                ]
+            },
+        });
+    }
+    async findManyGradesDecilesBySubjcteId(id) {
+        return this.subjectRepository.findByPk(id, {
+            include: {
+                model: grade_entity_1.Grade,
+                as: 'grades',
+                attributes: [],
+            },
+            group: ['Subject.id'],
+            attributes: {
+                include: [
+                    [sequelize_1.default.literal(`
+                    ARRAY[
+                        cast (percentile_cont(0.1) within group(order by grades.value) as varchar),
+                        cast (percentile_cont(0.2) within group(order by grades.value) as varchar),
+                        cast (percentile_cont(0.3) within group(order by grades.value) as varchar),
+                        cast (percentile_cont(0.4) within group(order by grades.value) as varchar),
+                        cast (percentile_cont(0.5) within group(order by grades.value) as varchar),
+                        cast (percentile_cont(0.6) within group(order by grades.value) as varchar),
+                        cast (percentile_cont(0.7) within group(order by grades.value) as varchar),
+                        cast (percentile_cont(0.8) within group(order by grades.value) as varchar),
+                        cast (percentile_cont(0.9) within group(order by grades.value) as varchar)
+                    ]`), 'deciles']
                 ]
             },
         });

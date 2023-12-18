@@ -48,10 +48,7 @@ let StudentsRepository = class StudentsRepository {
         });
     }
     async findManyGradesByStudentId(id) {
-        return this.studentsRepository.findAll({
-            where: {
-                id
-            },
+        return this.studentsRepository.findByPk(id, {
             include: [{
                     model: grade_entity_1.Grade,
                     as: 'grades',

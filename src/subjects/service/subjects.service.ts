@@ -14,7 +14,12 @@ export class SubjectsService {
     return this.subjectRepository.createMany(reportsSubjects,transaction);
   }
 
-  findManySubjectsGrades() {
-    return this.subjectRepository.findManySubjectGrades();
+  findManySubjectAvgMedGrades() {
+    return this.subjectRepository.findManySubjectAvgMedGrades();
   }
+
+  findManyGradesDecilesBySubjcteId(id:string) {
+    return this.subjectRepository.findManyGradesDecilesBySubjcteId(id);
+  }
+
 }

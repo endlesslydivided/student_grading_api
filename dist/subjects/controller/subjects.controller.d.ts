@@ -3,4 +3,5 @@ export declare class SubjectsController {
     private readonly subjectsService;
     constructor(subjectsService: SubjectsService);
     getManySubjectGrades(): Promise<import("../entities/subject.entity").Subject[]>;
+    getManyStudentGrades(id: string): Promise<import("../entities/subject.entity").Subject>;
 }

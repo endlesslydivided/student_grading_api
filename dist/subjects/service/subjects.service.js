@@ -19,8 +19,11 @@ let SubjectsService = class SubjectsService {
     upsertMany(reportsSubjects, transaction) {
         return this.subjectRepository.createMany(reportsSubjects, transaction);
     }
-    findManySubjectsGrades() {
-        return this.subjectRepository.findManySubjectGrades();
+    findManySubjectAvgMedGrades() {
+        return this.subjectRepository.findManySubjectAvgMedGrades();
+    }
+    findManyGradesDecilesBySubjcteId(id) {
+        return this.subjectRepository.findManyGradesDecilesBySubjcteId(id);
     }
 };
 SubjectsService = __decorate([
