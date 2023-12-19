@@ -8,9 +8,13 @@ import {
   ApiBadRequestResponse,
   ApiOperation,
   ApiResponse,
+  ApiTags,
 } from '@nestjs/swagger';
 import { SubjectsService } from '../service/subjects.service';
 
+
+
+@ApiTags('Subjects')
 @Controller('subjects')
 export class SubjectsController {
   constructor(private readonly subjectsService: SubjectsService) {}
