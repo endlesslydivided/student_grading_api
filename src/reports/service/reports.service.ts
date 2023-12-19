@@ -31,12 +31,10 @@ export class ReportsService {
     if (!file) {
       throw new BadRequestException('File is empty');
     }
-    
+
     try {
       return this.sequelizeInstance.transaction(async (transaction) => {
 
-       
-  
         const data = file.buffer.toString();
   
         const lines = data.split('\n').slice(0, -1);
