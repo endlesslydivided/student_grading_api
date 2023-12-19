@@ -28,12 +28,14 @@ export class ReportsService {
 
   async parseReportsCSV(file: Express.Multer.File): Promise<Array<Student>> {
 
+    if (!file) {
+      throw new BadRequestException('File is empty');
+    }
+    
     try {
       return this.sequelizeInstance.transaction(async (transaction) => {
 
-        if (!file) {
-          throw new BadRequestException('File is empty');
-        }
+       
   
         const data = file.buffer.toString();
   
