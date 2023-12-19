@@ -1,0 +1,36 @@
+version: '3'
+services:
+  api:
+    build: .
+    ports:
+      - 3000:3000
+    depends_on:
+      grading_app_db:
+        condition: service_healthy
+    restart: always
+    env_file:
+      - .env
+    environment:
+      POSTGRESQL_DATABASE_HOST: grading_app_db
+  grading_app_db:
+    container_name: grading_app_db
+    image: postgres:15
+    restart: always
+    ports:
+      - 5432:5432
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${POSTGRESQL_DATABASE_DBNAME}
+      POSTGRES_USER: ${POSTGRESQL_DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRESQL_DATABASE_PASSWORD}
+      PGDATA: /var/lib/postgresql/data/pgdata 
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - pg_data_container:/var/lib/postgresql/data/pgdata
+volumes:
+  pg_data_container:
