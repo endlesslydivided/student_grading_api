@@ -15,7 +15,6 @@ import {
 } from '@nestjs/swagger';
 import { ReportsService } from './service/reports.service';
 
-
 @ApiTags('Reports')
 @Controller('reports')
 export class ReportsController {

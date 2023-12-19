@@ -19,40 +19,49 @@ export class SubjectRepository {
     });
   }
 
-
   async findManySubjectAvgMedGrades() {
     return this.subjectRepository.findAll({
-      include:[{
-        model:Grade,
-        as:'grades',
-        where:{
-          isLastSubmitted:true
+      include: [
+        {
+          model: Grade,
+          as: 'grades',
+          where: {
+            isLastSubmitted: true,
+          },
+          attributes: [],
         },
-        attributes:[]
-      }],
-      attributes:{
-        include:[
-          [sequelize.literal('round(AVG(grades.value))'),'averageGrade'],
-          [sequelize.literal('percentile_cont(0.5) within group(order by grades.value)'),'medialGrade']
-        ]
+      ],
+      attributes: {
+        include: [
+          [sequelize.literal('round(AVG(grades.value))'), 'averageGrade'],
+          [
+            sequelize.literal(
+              'percentile_cont(0.5) within group(order by grades.value)',
+            ),
+            'medialGrade',
+          ],
+        ],
       },
-      group:["Subject.id"]
+      group: ['Subject.id'],
     });
   }
 
   async findManyGradesDecilesBySubjcteId(id: string) {
-    return this.subjectRepository.findByPk(id,{
-        include:[{
-          model:Grade,
-          as:'grades',
-          where:{
-            isLastSubmitted:true
+    return this.subjectRepository.findByPk(id, {
+      include: [
+        {
+          model: Grade,
+          as: 'grades',
+          where: {
+            isLastSubmitted: true,
           },
-          attributes:[]
-        }],
-        attributes:{
-          include:[
-            [sequelize.literal(`array
+          attributes: [],
+        },
+      ],
+      attributes: {
+        include: [
+          [
+            sequelize.literal(`array
             [
                 percentile_cont(0.1) within group(order by grades.value),
                 percentile_cont(0.2) within group(order by grades.value),
@@ -63,10 +72,12 @@ export class SubjectRepository {
                 percentile_cont(0.7) within group(order by grades.value),
                 percentile_cont(0.8) within group(order by grades.value),
                 percentile_cont(0.9) within group(order by grades.value)
-            ]`),'deciles'],
-          ]
-        },
-        group:["Subject.id"]
-      });
-    }
+            ]`),
+            'deciles',
+          ],
+        ],
+      },
+      group: ['Subject.id'],
+    });
+  }
 }

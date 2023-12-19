@@ -5,7 +5,7 @@ export interface ReportSubject {
 export interface ReportGrade {
   value?: number;
   subjectId?: string;
-  isLastSubmitted:true;
+  isLastSubmitted: true;
 }
 
 export interface StudentReport {

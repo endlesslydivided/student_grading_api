@@ -27,47 +27,46 @@ export class StudentsRepository {
   }
 
   async findManyStudentsAverageGrades() {
-
     return this.studentsRepository.findAll({
-      include:[{
-        model:Grade,
-        as:'grades',
-        where:{
-          isLastSubmitted:true
+      include: [
+        {
+          model: Grade,
+          as: 'grades',
+          where: {
+            isLastSubmitted: true,
+          },
+          attributes: [],
         },
-        attributes:[]
-      }],
-      attributes:{
-        include:[
-          [sequelize.literal('round(AVG(grades.value))'),'averageGrade'],
-        ]
+      ],
+      attributes: {
+        include: [
+          [sequelize.literal('round(AVG(grades.value))'), 'averageGrade'],
+        ],
       },
-      group:["Student.id"]
+      group: ['Student.id'],
     });
-    
   }
 
   async findManyGradesByStudentId(id: string) {
-    return this.studentsRepository.findByPk(id,{
-
-      include:[{
-        model:Grade,
-        as:'grades',
-        where:{
-          isLastSubmitted:true,
-          value: {[Op.ne] : null}
+    return this.studentsRepository.findByPk(id, {
+      include: [
+        {
+          model: Grade,
+          as: 'grades',
+          where: {
+            isLastSubmitted: true,
+            value: { [Op.ne]: null },
+          },
+          attributes: ['value'],
+          include: [
+            {
+              model: Subject,
+              as: 'subject',
+              attributes: ['name'],
+            },
+          ],
         },
-        attributes:['value'],
-        include:[
-          {
-            model: Subject,
-            as:'subject',
-            attributes:['name']
-          }
-        ],
-      }],
-
+      ],
     });
   }
-  
 }

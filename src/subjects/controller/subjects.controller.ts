@@ -12,8 +12,6 @@ import {
 } from '@nestjs/swagger';
 import { SubjectsService } from '../service/subjects.service';
 
-
-
 @ApiTags('Subjects')
 @Controller('subjects')
 export class SubjectsController {

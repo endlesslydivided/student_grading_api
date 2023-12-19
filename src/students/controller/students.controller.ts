@@ -12,7 +12,6 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-
 @ApiTags('Students')
 @Controller('students')
 export class StudentsController {

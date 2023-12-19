@@ -6,13 +6,14 @@ import { Grade } from '../entities/grade.entity';
 export class GradesRepository {
   constructor(@Inject(Grade) private gradesRepository: typeof Grade) {}
 
-
-  async setLastSubmitted(transaction:Transaction) {
-    return this.gradesRepository.update({isLastSubmitted: false},{
-      where:{},
-      transaction,
-      returning:false
-    });
+  async setLastSubmitted(transaction: Transaction) {
+    return this.gradesRepository.update(
+      { isLastSubmitted: false },
+      {
+        where: {},
+        transaction,
+        returning: false,
+      },
+    );
   }
-
 }

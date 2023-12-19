@@ -9,7 +9,7 @@ import {
 } from 'sequelize-typescript';
 import { Grade } from '../../grades/entities/grade.entity';
 
-@Table({ timestamps: true, tableName:'subjects'})
+@Table({ timestamps: true, tableName: 'subjects' })
 export class Subject extends Model<Subject> {
   @Default(DataType.UUIDV4)
   @Column({ type: DataType.UUID, primaryKey: true })
